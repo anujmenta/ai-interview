@@ -120,9 +120,6 @@ func (s *Store) deleteBookmark(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	if !deleted {
-		writeError(w, http.StatusNotFound, "bookmark not found")
-		return
-	}
+	_ = deleted
 	w.WriteHeader(http.StatusNoContent)
 }

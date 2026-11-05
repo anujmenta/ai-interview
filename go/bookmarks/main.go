@@ -14,11 +14,7 @@ func main() {
 	store := &Store{db: db}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /bookmarks", store.listBookmarks)
-	mux.HandleFunc("POST /bookmarks", store.createBookmark)
-	mux.HandleFunc("GET /bookmarks/{id}", store.getBookmark)
-	mux.HandleFunc("PUT /bookmarks/{id}", store.updateBookmark)
-	mux.HandleFunc("DELETE /bookmarks/{id}", store.deleteBookmark)
+	store.registerRoutes(mux)
 
 	port := os.Getenv("PORT")
 	if port == "" {
