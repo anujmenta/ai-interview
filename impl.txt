@@ -1,0 +1,16 @@
+lets implement collections with manual ordering following the existing pattern in Db.java, Store.java and Routes.java
+
+1. Schema -
+- add a collection record (id, name, created_at)
+- create collection table and collection_bookmarks table (collection_id, bookmark_id, position) with PK (collection_id, bookmark_id)
+
+2. Store.java -
+- add CRUD methods for collections
+- add a method to add a bookmark to a collection at a given position, remove a bookmark from a collection (position should be decremented for higher positions)
+- when deleting bookmark globally, also shift the positions in collections it belonged to
+
+3. Routes.java -
+- wire /collections, /collections/{id}, /collections/{id}/bookmarks, /collections/{id}/bookmarks/{bookmarkId}, /collections/{id}/bookmarks/{bookmarkId}/position
+
+Keep existing /bookmarks  endpoints untouched in behavior
+
