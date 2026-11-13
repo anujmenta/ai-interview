@@ -1,0 +1,12 @@
+1. Schema & model -
+- add a sharelink record (url, targetType, collection id, bookmark id, expiresAt)
+- create a sharelink table
+
+2. Store.java -
+- generate url using Base 64 hashing, so links arent guessable
+- add create bookmark share link and create collection share link method
+
+3. Routes.java -
+- add POST /bookmarks/{id}/share and POST /collections/{id}/share
+
+Keep existing /bookmarks  and /collections endpoints untouched in behavior

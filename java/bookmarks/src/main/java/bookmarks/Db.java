@@ -18,6 +18,26 @@ public final class Db {
             created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )""";
 
+    private static final String COLLECTIONS_SCHEMA = """
+        CREATE TABLE IF NOT EXISTS collections (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )""";
+
+    private static final String COLLECTION_BOOKMARKS_SCHEMA = """
+        CREATE TABLE IF NOT EXISTS collection_bookmarks (
+            collection_id INTEGER NOT NULL REFERENCES collections (id) ON DELETE CASCADE,
+            bookmark_id INTEGER NOT NULL REFERENCES bookmarks (id) ON DELETE CASCADE,
+            position INTEGER NOT NULL,
+            PRIMARY KEY (collection_id, bookmark_id)
+        )""";
+
+    // The PK already indexes collection_id; this covers lookups by bookmark_id (global delete).
+    private static final String COLLECTION_BOOKMARKS_INDEX = """
+        CREATE INDEX IF NOT EXISTS collection_bookmarks_bookmark_id
+            ON collection_bookmarks (bookmark_id)""";
+
     private Db() {}
 
     public static Connection getConn() throws SQLException {
@@ -29,6 +49,9 @@ public final class Db {
     public static void init() throws SQLException {
         try (Connection conn = getConn(); Statement stmt = conn.createStatement()) {
             stmt.execute(SCHEMA);
+            stmt.execute(COLLECTIONS_SCHEMA);
+            stmt.execute(COLLECTION_BOOKMARKS_SCHEMA);
+            stmt.execute(COLLECTION_BOOKMARKS_INDEX);
         }
     }
 }
